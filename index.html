@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>信修案件分析</title>
+	
+	<meta name="description" content="A jQuery library for modern HTML presentations">
+	<meta name="author" content="Caleb Troughton">
+	<meta name="viewport" content="width=1024, user-scalable=no">
+	
+	<link href="image/credit_card.ico" rel="shortcut icon" />
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="css/deck.core.css">
+	<link rel="stylesheet" href="css/deck.status.css">
+	<link rel="stylesheet" href="css/deck.scale.css">
+	
+	<!-- Style theme. More available in /themes/style/ or create your own. -->
+	<link rel="stylesheet" href="css/web-2.0.css">
+	
+	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
+	<link rel="stylesheet" href="css/horizontal-slide.css">
+
+	<link rel="stylesheet" href="css/md_hl.css">
+	
+	<script src="js/modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides -->
+<section class="slide 
+"><div class="content"><h2>信修案件智能指导</h2></div></section>
+<section class="slide "><div class="content"><h2>内容</h2>
+<ol>
+<li>
+<p>信修问题的需求分析</p>
+</li>
+<li>
+<p>数据挖掘模型的构建</p>
+</li>
+<li>
+<p>如何落地</p>
+</li>
+</ol></div></section>
+<section class="slide 
+"><div class="content"><h2>需求分析</h2>
+<ul>
+<li>
+<p class="slide">1.预测是否回款(可以看到提报信修与否的预测变化)</p>
+</li>
+<li>
+<p class="slide">2.预测信修成功与否</p>
+</li>
+<li>
+<p class="slide">3.建立规则集预测查找方向(催收系统应该首先实现该功能)</p>
+</li>
+</ul></div></section>
+<section class="slide "><div class="content"><h3>合理优化信修资源，案件画像，刻画案件是否应该信修及提报信修的时间节点</h3></div></section>
+<section class="slide "><div class="content"><h3>缺点：并没有充分考虑信修案件的时延性</h3></div></section>
+<section class="slide 
+"><div class="content"><h2>需求转化</h2>
+<ol>
+<li>
+<p><strong>数据来源：</strong> 接单时间在2017年1月至2017年9月的招商案件</p>
+</li>
+<li>
+<p><strong>构建特征：</strong> 案件基本特征，债务人基本特征，法务操作特征</p>
+</li>
+<li>
+<p><strong>最终算法构建：</strong> lightGBM + XGBboost ==&gt; Stacking</p>
+</li>
+</ol>
+<p>注：</p>
+<p>1.‘特征’的意思就是业务中的所说的影响结果的因素（下文同样意义）</p>
+<p>2.下面要展示的就是我们用了哪些特征，用了什么样的策略，落地的方式</p></div></section>
+<section class="slide "><div class="content"><h2>特征</h2>
+<p>建模策略： 尽量精简的特征 + 复杂数据挖掘模型</p>
+<p>原因： 1.上线成本低；2.特征多或细意味着模型融入的噪声越多且波动越大</p></div></section>
+<section class="slide "><div class="content"><h2>特征构建图</h2>
+<p>白话的意思是： 我们做策略所考虑的可量化的影响因素</p>
+<p><a href="../image/TZ.html" target="_blank">【点我看特征】</a></p></div></section>
+<section class="slide "><div class="content"><h2>机器学习模型(了解)</h2>
+<ul>
+<li>
+<p>数据模型：lightGBM及XGBoost </p>
+</li>
+<li>
+<p>Stacking </p>
+</li>
+<li>
+<p>Grid调参(暴力参数学习）</p>
+</li>
+</ul>
+<p>注：</p>
+<p>1.五个名词的意思就是我们的工作</p>
+<p>2.模型替我们做了哪些事呢？(答案：自主学习策略，最优策略选择，影响因素重要性选择）</p>
+<p>3.直白一点：数据交给机器学习算法(模型)，‘算法’自己通过训练的数据学习数据中蕴含的逻辑和复杂关系，然后用于去做一些它擅长的事情，因为他是经过严格训练过的，所以我们相信他能干好！</p></div></section>
+<section class="slide "><div class="content"><h2>下面讲点干货</h2></div></section>
+<section class="slide "><div class="content"><h2>XGBoost</h2>
+<p><img alt="" src="image/xgb_import.png" /></p></div></section>
+<section class="slide "><div class="content"><h2>XGBoost 混淆矩阵</h2>
+<p><img alt="" src="image/xgb_cm.png" /></p></div></section>
+<section class="slide "><div class="content"><h2>lightGBM</h2>
+<p><img alt="" src="image/lgb_import.png" /></p></div></section>
+<section class="slide "><div class="content"><p><img alt="" src="image/lgb_cm.png" /></p></div></section>
+<section class="slide "><div class="content"><p>截止今天下午2点,第2个问题的model还没出来。</p></div></section>
+<section class="slide "><div class="content"><h2>第1个问题的Model已经可以正常工作</h2>
+<p><img alt="" src="image/auc_s.png" /></p></div></section>
+<section class="slide "><div class="content"><p><img alt="" src="image/cm_s.png" /></p></div></section>
+<section class="slide "><div class="content"><ul>
+<li>
+<p>最终模型已经确定</p>
+</li>
+<li>
+<p>最终特征会根据变量重要性做调整</p>
+</li>
+<li>
+<p>本周提交项目所有内容</p>
+</li>
+</ul></div></section>
+<section class="slide "><div class="content"><h2>关于模型怎么用的问题解释</h2>
+<ul>
+<li>
+<p>来了案件不论是有没有提报信修的案件（未提报信修特征为0，提报信修特征为1）</p>
+</li>
+<li>
+<p>基于当前拿到的案件信息预测该案件未来的回款</p>
+</li>
+<li>
+<p>模型可以做定时预测</p>
+</li>
+<li>
+<p>可以通过嵌入催收系统，对案件做定时预测，从而刻画整个案件委案周期的信修有效性的案件画像</p>
+</li>
+<li>
+<p>可以做成桌面应用程序(软件直接后台连数据库，做信修案件有效性的画像，(该方案不需经过催收系统，现在已经基本实现)</p>
+</li>
+</ul></div></section>
+<section class="slide "><div class="content"><p><img alt="" src="image/app.png" /></p></div></section>
+<section class="slide "><div class="content"><h2>如有问题请参考在线文档</h2>
+<p>https://dataxujing.github.io/xx</p></div></section>
+<section class="slide "><div class="content"><h3>The End</h3>
+<h3>Thanks for Your Attention!</h3></div></section>
+
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+</p>
+
+<!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js"><\/script>')</script>
+
+<!-- Deck Core and extensions -->
+<script src="js/deck.core.js"></script>
+<script src="js/deck.status.js"></script>
+<script src="js/deck.scale.js"></script>
+
+<!-- Initialize the deck -->
+<script>
+$(function() {
+	$.deck('.slide');
+});
+</script>
+
+</body>
+</html>
